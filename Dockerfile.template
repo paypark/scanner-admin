@@ -14,6 +14,9 @@ WORKDIR /usr/src/app
 # Copy requirements.txt first for better cache on later pushes
 COPY ./requirements.txt /requirements.txt
 
+# skip checking if really is ARM device
+ENV READTHEDOCS True
+
 # pip install python deps from requirements.txt on the resin.io build server
 RUN pip install -r /requirements.txt
 
@@ -22,9 +25,6 @@ COPY . ./
 
 # switch on systemd init system in container
 ENV INITSYSTEM on
-
-# skip checking if really is ARM device
-ENV READTHEDOCS True
 
 # main.py will run when container starts up on the device
 CMD ["python","src/app.py"]
