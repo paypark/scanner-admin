@@ -1,5 +1,6 @@
 import io
 import time
+import uuid
 import picamera
 from base_camera import BaseCamera
 
@@ -21,3 +22,13 @@ class Camera(BaseCamera):
                 # reset stream for next frame
                 stream.seek(0)
                 stream.truncate()
+    
+    @staticmethod
+    def snapshot():
+        with picamera.PiCamera() as camera:
+            time.sleep(2)
+            filename = str(uuid.uuid4()) + ".jpg"
+            camera.capture(filename)
+            return filename
+
+

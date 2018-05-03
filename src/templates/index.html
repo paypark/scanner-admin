@@ -2,6 +2,7 @@
   <head>
     <title>Video Streaming Demonstration</title>
     <style>
+      .snapshot,
       .video-stream {
         width: 100%;
       }
@@ -9,12 +10,15 @@
   </head>
   <body>
     <h1>Video Streaming Demonstration</h1>
-    <div class="stream-container">
+    <div class="stream-container"></div>
+    <div class="buttons">
+      <button onclick="increase()">Increase</button>
+      <button onclick="decrease()">Decrease</button>
+      <button onclick="snapshot()">snapshot</button>
+      <button onclick="showStream()">Show stream</button>
+      <button onclick="hideStream()">Hide stream</button>
     </div>
-    <button onclick="increase()">Increase</button>
-    <button onclick="decrease()">Decrease</button>
-    <button onclick="showStream()">Show stream</button>
-    <button onclick="hideStream()">Hide stream</button>
+    <div class="snapshot-container"></div>
     <script>
       function increase() {
         console.log('increase()');
@@ -23,6 +27,20 @@
       function decrease() {
         console.log('decrase()');
         fetch('/decrease');
+      }
+      function snapshot() {
+        console.log('snapshot()');
+        fetch('/snapshot', { method: 'PUT' })
+          .then(response => response.json())
+          .then(({ filename }) => snapshotShow(filename));
+      }
+      function snapshotShow(fileName) {
+        const snapshotContainerElement = document.querySelector('.snapshot-container');
+        snapshotContainerElement.innerHTML = `<img src="/snapshot/${fileName}" class="snapshot" />`;
+      }
+      function snapshotHide() {
+        const snapshotContainerElement = document.querySelector('.snapshot-container');
+        snapshotContainerElement.innerHTML = '';
       }
       function showStream() {
         const streamContainerElement = document.querySelector('.stream-container');

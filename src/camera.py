@@ -1,4 +1,5 @@
 import time
+import uuid
 from base_camera import BaseCamera
 
 
@@ -12,3 +13,7 @@ class Camera(BaseCamera):
         while True:
             time.sleep(1)
             yield Camera.imgs[int(time.time()) % 3]
+
+    @staticmethod
+    def snapshot():
+        return str(uuid.uuid4()) + ".jpg"

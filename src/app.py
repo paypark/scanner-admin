@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from importlib import import_module
 import os
-from flask import Flask, render_template, Response, jsonify
+from flask import Flask, render_template, Response, jsonify, send_from_directory, send_file
 
 # import camera driver
 if os.environ.get('CAMERA'):
@@ -9,11 +9,7 @@ if os.environ.get('CAMERA'):
 else:
     from camera import Camera
 
-# Raspberry Pi camera module (requires picamera package)
-# from camera_pi import Camera
-
 app = Flask(__name__)
-
 
 @app.route('/')
 def index():
@@ -31,6 +27,20 @@ def decrease():
     obj = {}
     obj['message'] = "decreased"
     return jsonify(obj)
+
+@app.route('/snapshot', methods = ['PUT'])
+def snapshot():
+    filename = Camera.snapshot()
+    obj = {}
+    obj['filename'] = filename
+    return jsonify(obj)
+
+@app.route('/snapshot/<path:path>', methods = ['GET'])
+def snapshotDetail(path):
+    if os.environ.get('CAMERA') == 'pi':
+        return send_from_directory('.', path)
+    else:
+        return send_from_directory('.', '1.jpg')
 
 def gen(camera):
     """Video streaming generator function."""
