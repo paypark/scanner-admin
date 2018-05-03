@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <title>Video Streaming Demonstration</title>
+    <style>
+      .video-stream {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Video Streaming Demonstration</h1>
+    <div class="stream-container">
+    </div>
+    <button onclick="increase()">Increase</button>
+    <button onclick="decrease()">Decrease</button>
+    <button onclick="showStream()">Show stream</button>
+    <button onclick="hideStream()">Hide stream</button>
+    <script>
+      function increase() {
+        console.log('increase()');
+        fetch('/increase');
+      } 
+      function decrease() {
+        console.log('decrase()');
+        fetch('/decrease');
+      }
+      function showStream() {
+        const streamContainerElement = document.querySelector('.stream-container');
+        streamContainerElement.innerHTML = '<img class="video-stream" src="/video_feed" >';
+      }
+      function hideStream() {
+        const streamContainerElement = document.querySelector('.stream-container');
+        streamContainerElement.innerHTML = '';
+      }
+    </script>
+  </body>
+</html>
