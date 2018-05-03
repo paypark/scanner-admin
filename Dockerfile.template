@@ -27,4 +27,5 @@ COPY . ./
 ENV INITSYSTEM on
 
 # main.py will run when container starts up on the device
-CMD ["python","src/app.py"]
+WORKDIR /usr/src/app/src
+CMD ["python","app.py"]
