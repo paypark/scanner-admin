@@ -8,7 +8,7 @@ class Camera(BaseCamera):
 
     def __init__(self, cameraSettings):
         Camera.cameraInstance = picamera.PiCamera()
-        Camera.isRecording = False
+        # Camera.isRecording = False
         super(Camera, self).__init__()
         time.sleep(2)
         Camera.cameraInstance.framerate = cameraSettings.getShutterSpeed()
@@ -22,14 +22,14 @@ class Camera(BaseCamera):
 
     @staticmethod
     def frames():
-        Camera.isRecording = True
+        # Camera.isRecording = True
         stream = io.BytesIO()
         for _ in Camera.cameraInstance.capture_continuous(
                 stream, 'jpeg', use_video_port=True):
 
-            if Camera.isRecording == False:
-                print("exit capture_continuous")
-                break;
+            # if Camera.isRecording == False:
+            #     print("exit capture_continuous")
+            #     break;
 
             # return current frame
             stream.seek(0)
