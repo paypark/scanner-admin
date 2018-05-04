@@ -29,3 +29,11 @@ class Camera(BaseCamera):
     @staticmethod
     def snapshot():
         return str(uuid.uuid4()) + ".jpg"
+
+    @staticmethod
+    def pause():
+        print("pause()")
+
+    @staticmethod
+    def resume():
+        print("resume()")
