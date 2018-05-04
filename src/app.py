@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 from importlib import import_module
 import os
-from flask import Flask, render_template, Response, jsonify, send_from_directory, send_file
+import json
+from flask import Flask, render_template, Response, jsonify, send_from_directory, send_file, request
 
 # import camera driver
 if os.environ.get('CAMERA'):
@@ -10,6 +11,10 @@ else:
     from camera import Camera
 
 app = Flask(__name__)
+
+from CaptureSettings import CaptureSettings
+captureSettings = CaptureSettings()
+captureSettings.setShutterSpeed(100)
 
 @app.route('/')
 def index():
@@ -28,6 +33,17 @@ def decrease():
     obj['message'] = "decreased"
     return jsonify(obj)
 
+@app.route('/settings', methods = ['GET', 'PATCH'])
+def settings():
+    if request.method == 'GET':
+        return jsonify(captureSettings.toJSON())
+
+    if request.method == 'PATCH':
+        jsonObject = request.get_json()
+        captureSettings.set(jsonObject)
+        Camera.updateSettings(captureSettings)
+        return json.dumps({ 'success': True }, 200, { 'Content-Type': 'applicaton/json' })
+
 @app.route('/snapshot', methods = ['PUT'])
 def snapshot():
     filename = Camera.snapshot()
@@ -38,9 +54,9 @@ def snapshot():
 @app.route('/snapshot/<path:path>', methods = ['GET'])
 def snapshotDetail(path):
     if os.environ.get('CAMERA') == 'pi':
-        return send_from_directory('.', path)
+        return send_from_directory('./src', path)
     else:
-        return send_from_directory('.', '1.jpg')
+        return send_from_directory('./src', '1.jpg')
 
 def gen(camera):
     """Video streaming generator function."""
@@ -53,8 +69,10 @@ def gen(camera):
 @app.route('/video_feed')
 def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
-    return Response(gen(Camera()),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(
+        gen(Camera(captureSettings)),
+        mimetype='multipart/x-mixed-replace; boundary=frame'
+    )
 
 
 if __name__ == '__main__':

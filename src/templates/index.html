@@ -12,14 +12,29 @@
     <h1>Video Streaming Demonstration</h1>
     <div class="stream-container"></div>
     <div class="buttons">
-      <button onclick="increase()">Increase</button>
-      <button onclick="decrease()">Decrease</button>
-      <button onclick="snapshot()">snapshot</button>
-      <button onclick="showStream()">Show stream</button>
-      <button onclick="hideStream()">Hide stream</button>
+      <button onclick="onIncreaseButtonClick()">Increase</button>
+      <button onclick="onDecreaseButtonClick()">Decrease</button>
+      <button onclick="onSnapshotButtonClick()">snapshot</button>
+      <button onclick="onShowStreamButtonClick()">Show stream</button>
+      <button onclick="onHideStreamButtonClick()">Hide stream</button>
+    </div>
+    <div>
+      <input type="text" class="shutter-speed">
+      <button onclick="onSaveSettingsButtonClick()">Save settings</button>
     </div>
     <div class="snapshot-container"></div>
     <script>
+      // handlers
+
+      function onIncreaseButtonClick() { increase(); }
+      function onDecreaseButtonClick() { decrease(); }
+      function onSnapshotButtonClick() { snapshot(); }
+      function onShowStreamButtonClick() { showStream(); }
+      function onHideStreamButtonClick() { hideStream(); }
+      function onSaveSettingsButtonClick() { saveSettings(); }
+
+      // controllers
+
       function increase() {
         console.log('increase()');
         fetch('/increase');
@@ -34,6 +49,24 @@
           .then(response => response.json())
           .then(({ filename }) => snapshotShow(filename));
       }
+      function getSettings() {
+        fetch('/settings')
+          .then(response => response.json())
+          .then(settings => updateSettings(settings));
+      }
+      function saveSettings() {
+        console.log('saveSettings()');
+        const shutterSpeedInputElement = document.querySelector('.shutter-speed');
+        const settings = {
+          shutterSpeed: shutterSpeedInputElement.value,
+        };
+
+        fetch('/settings', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(settings) })
+          .then(() => console.log('success!!!'));
+      }
+
+      // view manipulators
+
       function snapshotShow(fileName) {
         const snapshotContainerElement = document.querySelector('.snapshot-container');
         snapshotContainerElement.innerHTML = `<img src="/snapshot/${fileName}" class="snapshot" />`;
@@ -50,6 +83,16 @@
         const streamContainerElement = document.querySelector('.stream-container');
         streamContainerElement.innerHTML = '';
       }
+      function updateSettings(settings) {
+        const shutterSpeedInputElement = document.querySelector('.shutter-speed');
+        shutterSpeedInputElement.value = settings.shutterSpeed;
+      }
+
+      function initialize() {
+        getSettings();
+      }
+
+      initialize();
     </script>
   </body>
 </html>
