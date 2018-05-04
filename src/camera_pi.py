@@ -26,7 +26,7 @@ class Camera(BaseCamera):
         for _ in Camera.cameraInstance.capture_continuous(
                 stream, 'jpeg', use_video_port=True):
 
-            if not Camera.isRecording:
+            if Camera.isRecording == False:
                 break;
 
             # return current frame
