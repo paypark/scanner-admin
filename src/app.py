@@ -14,7 +14,9 @@ app = Flask(__name__)
 
 from CaptureSettings import CaptureSettings
 captureSettings = CaptureSettings()
-captureSettings.setShutterSpeed(30)
+captureSettings.setShutterSpeed(5000)
+captureSettings.setFrameRate(30)
+captureSettings.setIso(800)
 
 @app.route('/')
 def index():

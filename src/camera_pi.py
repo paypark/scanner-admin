@@ -10,13 +10,13 @@ class Camera(BaseCamera):
         Camera.cameraInstance = picamera.PiCamera()
         super(Camera, self).__init__()
         time.sleep(2)
-        Camera.cameraInstance.framerate = cameraSettings.getFrameRate()
-        Camera.cameraInstance.shutter_speed = cameraSettings.getShutterSpeed()
+        Camera.updateSettings(cameraSettings)
 
     @staticmethod
     def updateSettings(cameraSettings):
         Camera.cameraInstance.framerate = cameraSettings.getFrameRate()
         Camera.cameraInstance.shutter_speed = cameraSettings.getShutterSpeed()
+        Camera.cameraInstance.iso = cameraSettings.getIso()
 
     @staticmethod
     def frames():

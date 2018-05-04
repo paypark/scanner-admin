@@ -3,6 +3,7 @@ class CaptureSettings(object):
     def __init__(self):
         self.shutterSpeed = 0
         self.frameRate = 30
+        self.iso = 0
 
     def getShutterSpeed(self):
         return self.shutterSpeed
@@ -16,6 +17,13 @@ class CaptureSettings(object):
 
     def setFrameRate(self, frameRate):
         self.frameRate = frameRate
+        return self
+
+    def getIso(self):
+        return self.iso
+
+    def setIso(self, iso):
+        self.iso = iso
         return self
 
     def set(self, newSettings):
