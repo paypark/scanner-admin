@@ -19,7 +19,14 @@
       <button onclick="onHideStreamButtonClick()">Hide stream</button>
     </div>
     <div>
-      <input type="text" class="shutter-speed">
+      <div>
+        <label>Shutter speed:</label>
+        <input type="text" class="shutter-speed">
+      </div>
+      <div>
+        <label>FPS:</label>
+        <input type="text" class="frame-rate">
+      </div>
       <button onclick="onSaveSettingsButtonClick()">Save settings</button>
     </div>
     <div class="snapshot-container"></div>
@@ -57,8 +64,10 @@
       function saveSettings() {
         console.log('saveSettings()');
         const shutterSpeedInputElement = document.querySelector('.shutter-speed');
+        const frameRateInputElement = document.querySelector('.frame-rate');
         const settings = {
           shutterSpeed: parseInt(shutterSpeedInputElement.value, 10),
+          frameRate: parseInt(frameRateInputElement.value, 10),
         };
 
         fetch('/settings', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(settings) })
@@ -86,6 +95,8 @@
       function updateSettings(settings) {
         const shutterSpeedInputElement = document.querySelector('.shutter-speed');
         shutterSpeedInputElement.value = settings.shutterSpeed;
+        const frameRateInputElement = document.querySelector('.frame-rate');
+        frameRateInputElement.value = settings.frameRate;
       }
 
       function initialize() {

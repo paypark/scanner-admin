@@ -8,30 +8,22 @@ class Camera(BaseCamera):
 
     def __init__(self, cameraSettings):
         Camera.cameraInstance = picamera.PiCamera()
-        # Camera.isRecording = False
         super(Camera, self).__init__()
         time.sleep(2)
-        Camera.cameraInstance.framerate = cameraSettings.getShutterSpeed()
+        Camera.cameraInstance.framerate = cameraSettings.getFrameRate()
+        Camera.cameraInstance.shutter_speed = cameraSettings.getShutterSpeed()
 
     @staticmethod
     def updateSettings(cameraSettings):
-        # Camera.pause()
-        # sleep(1)
-        Camera.cameraInstance.framerate = cameraSettings.getShutterSpeed()
-        # Camera.resume()
+        Camera.cameraInstance.framerate = cameraSettings.getFrameRate()
+        Camera.cameraInstance.shutter_speed = cameraSettings.getShutterSpeed()
 
     @staticmethod
     def frames():
-        # Camera.isRecording = True
         stream = io.BytesIO()
         for _ in Camera.cameraInstance.capture_continuous(
                 stream, 'jpeg', use_video_port=True):
 
-            # if Camera.isRecording == False:
-            #     print("exit capture_continuous")
-            #     break;
-
-            # return current frame
             stream.seek(0)
             yield stream.read()
 
@@ -45,13 +37,3 @@ class Camera(BaseCamera):
         filename = str(uuid.uuid4()) + ".jpg"
         Camera.cameraInstance.capture(filename)
         return filename
-
-    @staticmethod
-    def pause():
-        print("pause()")
-        Camera.isRecording = False
-
-    @staticmethod
-    def resume():
-        print("resume()")
-        Camera.isRecording = True

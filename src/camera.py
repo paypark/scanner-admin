@@ -14,6 +14,7 @@ class Camera(BaseCamera):
     def __init__(self, cameraSettings):
         super(Camera, self).__init__()
         Camera.shutter_speed = cameraSettings.getShutterSpeed()
+        Camera.isRecording = False
 
     @staticmethod
     def updateSettings(cameraSettings):
@@ -29,11 +30,3 @@ class Camera(BaseCamera):
     @staticmethod
     def snapshot():
         return str(uuid.uuid4()) + ".jpg"
-
-    @staticmethod
-    def pause():
-        print("pause()")
-
-    @staticmethod
-    def resume():
-        print("resume()")
