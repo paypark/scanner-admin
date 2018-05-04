@@ -29,9 +29,11 @@ class CaptureSettings(object):
     def set(self, newSettings):
         self.frameRate = newSettings['frameRate']
         self.shutterSpeed = newSettings['shutterSpeed']
+        self.iso = newSettings['iso']
 
     def toJSON(self):
         return dict(
             frameRate=self.frameRate,
-            shutterSpeed=self.shutterSpeed
+            shutterSpeed=self.shutterSpeed,
+            iso=self.iso
         )
