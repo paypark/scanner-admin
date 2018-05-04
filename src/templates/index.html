@@ -58,7 +58,7 @@
         console.log('saveSettings()');
         const shutterSpeedInputElement = document.querySelector('.shutter-speed');
         const settings = {
-          shutterSpeed: shutterSpeedInputElement.value,
+          shutterSpeed: parseInt(shutterSpeedInputElement.value, 10),
         };
 
         fetch('/settings', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(settings) })

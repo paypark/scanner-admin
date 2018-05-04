@@ -11,13 +11,14 @@ class Camera(BaseCamera):
         Camera.isRecording = False
         super(Camera, self).__init__()
         time.sleep(2)
-        Camera.cameraInstance.shutter_speed = cameraSettings.getShutterSpeed()
+        Camera.cameraInstance.framerate = cameraSettings.getShutterSpeed()
 
     @staticmethod
     def updateSettings(cameraSettings):
-        Camera.pause()
-        Camera.cameraInstance.shutter_speed = cameraSettings.getShutterSpeed()
-        Camera.resume()
+        # Camera.pause()
+        # sleep(1)
+        Camera.cameraInstance.framerate = cameraSettings.getShutterSpeed()
+        # Camera.resume()
 
     @staticmethod
     def frames():
