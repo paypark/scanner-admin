@@ -12,7 +12,7 @@ else:
 
 from CaptureSettings import CaptureSettings
 captureSettings = CaptureSettings()
-captureSettings.setShutterSpeed(0)
+captureSettings.setShutterSpeed(5000)
 captureSettings.setFrameRate(60)
 captureSettings.setIso(1)
 captureSettings.setHeight(480)
