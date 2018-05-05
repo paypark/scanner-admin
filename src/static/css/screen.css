@@ -53,8 +53,10 @@ body {
 
     padding: 0 24px;
     border: 0;
-    border-radius: 4px;
     outline: 0;
+
+    background-color: rgba(255, 255, 255, 0);
+    border-radius: 4px;
 
     color: #3f51b5;
     font-size: 14px;
