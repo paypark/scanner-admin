@@ -1,120 +1,35 @@
 <html>
   <head>
     <title>Video Streaming Demonstration</title>
-    <style>
-      .snapshot,
-      .video-stream {
-        width: 100%;
-      }
-    </style>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/screen.css">
   </head>
   <body>
     <h1>Video Streaming Demonstration</h1>
     <div class="stream-container"></div>
     <div class="buttons">
-      <button onclick="onIncreaseButtonClick()">Increase</button>
-      <button onclick="onDecreaseButtonClick()">Decrease</button>
-      <button onclick="onSnapshotButtonClick()">snapshot</button>
-      <button onclick="onShowStreamButtonClick()">Show stream</button>
-      <button onclick="onHideStreamButtonClick()">Hide stream</button>
+      <button class="sick-button" onclick="onIncreaseButtonClick()">Increase</button>
+      <button class="sick-button" onclick="onDecreaseButtonClick()">Decrease</button>
+      <button class="sick-button" onclick="onSnapshotButtonClick()">snapshot</button>
+      <button class="sick-button" onclick="onShowStreamButtonClick()">Show stream</button>
+      <button class="sick-button" onclick="onHideStreamButtonClick()">Hide stream</button>
     </div>
-    <div>
-      <div>
+    <div class="settings">
+      <div class="settings-item">
         <label>Shutter speed:</label>
-        <input type="text" class="shutter-speed">
+        <input type="number" class="shutter-speed">
       </div>
-      <div>
+      <div class="settings-item">
         <label>FPS:</label>
-        <input type="text" class="frame-rate">
+        <input type="number" class="frame-rate">
       </div>
-      <div>
+      <div class="settings-item">
         <label>Iso:</label>
-        <input type="text" class="iso">
+        <input type="number" class="iso">
       </div>
-      <button onclick="onSaveSettingsButtonClick()">Save settings</button>
+      <button class="sick-button" onclick="onSaveSettingsButtonClick()">Save settings</button>
     </div>
     <div class="snapshot-container"></div>
-    <script>
-      // handlers
-
-      function onIncreaseButtonClick() { increase(); }
-      function onDecreaseButtonClick() { decrease(); }
-      function onSnapshotButtonClick() { snapshot(); }
-      function onShowStreamButtonClick() { showStream(); }
-      function onHideStreamButtonClick() { hideStream(); }
-      function onSaveSettingsButtonClick() { saveSettings(); }
-
-      // controllers
-
-      function increase() {
-        console.log('increase()');
-        fetch('/increase');
-      } 
-      function decrease() {
-        console.log('decrase()');
-        fetch('/decrease');
-      }
-      function snapshot() {
-        console.log('snapshot()');
-        fetch('/snapshot', { method: 'PUT' })
-          .then(response => response.json())
-          .then(({ filename }) => snapshotShow(filename));
-      }
-      function getSettings() {
-        fetch('/settings')
-          .then(response => response.json())
-          .then(settings => updateSettings(settings));
-      }
-      function saveSettings() {
-        console.log('saveSettings()');
-        const shutterSpeedInputElement = document.querySelector('.shutter-speed');
-        const frameRateInputElement = document.querySelector('.frame-rate');
-        const isoInputElement = document.querySelector('.iso');
-
-        const settings = {
-          shutterSpeed: parseInt(shutterSpeedInputElement.value, 10),
-          frameRate: parseInt(frameRateInputElement.value, 10),
-          iso: parseInt(isoInputElement.value, 10),
-        };
-
-        fetch('/settings', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(settings) })
-          .then(() => console.log('success!!!'));
-      }
-
-      // view manipulators
-
-      function snapshotShow(fileName) {
-        const snapshotContainerElement = document.querySelector('.snapshot-container');
-        snapshotContainerElement.innerHTML = `<img src="/snapshot/${fileName}" class="snapshot" />`;
-      }
-      function snapshotHide() {
-        const snapshotContainerElement = document.querySelector('.snapshot-container');
-        snapshotContainerElement.innerHTML = '';
-      }
-      function showStream() {
-        const streamContainerElement = document.querySelector('.stream-container');
-        streamContainerElement.innerHTML = '<img class="video-stream" src="/video_feed" >';
-      }
-      function hideStream() {
-        const streamContainerElement = document.querySelector('.stream-container');
-        streamContainerElement.innerHTML = '';
-      }
-      function updateSettings(settings) {
-        const shutterSpeedInputElement = document.querySelector('.shutter-speed');
-        shutterSpeedInputElement.value = settings.shutterSpeed;
-
-        const frameRateInputElement = document.querySelector('.frame-rate');
-        frameRateInputElement.value = settings.frameRate;
-
-        const isoInputElement = document.querySelector('.iso');
-        isoInputElement.value = settings.iso;
-      }
-
-      function initialize() {
-        getSettings();
-      }
-
-      initialize();
-    </script>
+    <script src="js/main.js"></script>
   </body>
 </html>

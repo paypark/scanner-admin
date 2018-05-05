@@ -10,13 +10,20 @@ if os.environ.get('CAMERA'):
 else:
     from camera import Camera
 
-app = Flask(__name__)
-
 from CaptureSettings import CaptureSettings
 captureSettings = CaptureSettings()
 captureSettings.setShutterSpeed(5000)
 captureSettings.setFrameRate(30)
 captureSettings.setIso(800)
+
+app = Flask(__name__, static_folder='static')
+
+@app.route('/<path:filename>')
+def send_file(filename):
+    print('filename')
+    print(filename)
+    print(app.static_folder)
+    return send_from_directory(app.static_folder, filename)
 
 @app.route('/')
 def index():
@@ -45,6 +52,18 @@ def settings():
         captureSettings.set(jsonObject)
         Camera.updateSettings(captureSettings)
         return json.dumps({ 'success': True }, 200, { 'Content-Type': 'applicaton/json' })
+
+@app.route('/recording/start', methods = ['GET'])
+def recordingStart():
+    return json.dumps({ 'message': 'recording started' }, 200, { 'Content-Type': 'applicaton/json' })
+
+@app.route('/recording/stop', methods = ['GET'])
+def recordingStop():
+    return json.dumps({ 'message': 'recording stopped' }, 200, { 'Content-Type': 'applicaton/json' })
+
+@app.route('/recording/is-recording', methods = ['GET'])
+def recordingIsRecording():
+    return json.dumps({ 'isRecording': False }, 200, { 'Content-Type': 'applicaton/json' })
 
 @app.route('/snapshot', methods = ['PUT'])
 def snapshot():
