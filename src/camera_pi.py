@@ -17,7 +17,7 @@ class Camera(BaseCamera):
         Camera.cameraInstance.framerate = cameraSettings.getFrameRate()
         Camera.cameraInstance.shutter_speed = cameraSettings.getShutterSpeed()
         Camera.cameraInstance.iso = cameraSettings.getIso()
-        Camera.cameraInstance.resolution = (cameraSettings.getWidth(), cameraSettings.getHeight())
+        # Camera.cameraInstance.resolution = (cameraSettings.getWidth(), cameraSettings.getHeight())
 
     @staticmethod
     def frames():
