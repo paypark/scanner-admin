@@ -13,8 +13,10 @@ else:
 from CaptureSettings import CaptureSettings
 captureSettings = CaptureSettings()
 captureSettings.setShutterSpeed(5000)
-captureSettings.setFrameRate(30)
+captureSettings.setFrameRate(40)
 captureSettings.setIso(800)
+captureSettings.setHeight(480)
+captureSettings.setWidth(640)
 
 app = Flask(__name__, static_folder='static')
 
