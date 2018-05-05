@@ -3,39 +3,76 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
-h1 {
-    color: rgba(0, 0, 0, 0.7);
-}
-
 .snapshot,
 .video-stream {
   width: 100%;
 }
 
-.settings {}
+.buttons {
+    margin-bottom: 16px;
+}
+
+.settings {
+    margin: 8px;
+    padding: 8px;
+    border: 1px dotted rgba(0, 0, 0, 0.25);
+    border-radius: 3px;
+}
+
 .settings-item {
     display: flex;
     flex-direction: row;
+    margin-bottom: 8px;
 }
 
 .settings-item > * {
     flex: 1;
 }
 
+.settings-item > label {
+}
+
+.settings-item > input {
+    height: 24px;
+    line-height: 24px;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    border-radius: 3px;
+    outline: 0;
+    padding: 0 8px;
+}
+
+.settings-button {
+    margin-top: 8px;
+}
+
 .sick-button {
     height: 32px;
-    line-height: 32px;
+    line-height: 30px;
 
     padding: 0 24px;
-    margin: 4px;
 
-    background-color: rgba(57, 73, 171, 0.7);
+    background-color: #3f51b5;
     color: rgb(255, 255, 255);
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
-    border-radius: 3px;
+    border-radius: 4px;
+
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+    outline: 0;
 }
 
 .sick-button:hover {
-    background-color: rgba(57, 73, 171, 1);
+    cursor: pointer;
+}
+
+.sick-button:active {
+    box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
+}
+
+.sick-button:focus {
+    outline: 0;
+}
+
+.sick-button-full-width {
+    width: 100%;
 }
