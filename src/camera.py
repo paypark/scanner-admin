@@ -19,6 +19,10 @@ class Camera(BaseCamera):
     @staticmethod
     def updateSettings(cameraSettings):
         Camera.shutter_speed = cameraSettings.getShutterSpeed()
+        Camera.framerate = cameraSettings.getFrameRate()
+        Camera.shutter_speed = cameraSettings.getShutterSpeed()
+        Camera.iso = cameraSettings.getIso()
+        Camera.resolution = (cameraSettings.getWidth(), cameraSettings.getHeight())
         print("updateSettings()")
 
     @staticmethod
