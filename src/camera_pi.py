@@ -10,7 +10,7 @@ class Camera(BaseCamera):
 
     def __init__(self, cameraSettings):
         super(Camera, self).__init__()
-        time.sleep(2)
+        time.sleep(10)
         Camera.updateSettings(cameraSettings)
 
     @staticmethod
