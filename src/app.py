@@ -57,37 +57,18 @@ def settings():
 
 @app.route('/recording/start', methods = ['GET'])
 def recordingStart():
+    Camera.startRecording()
     return json.dumps({ 'message': 'recording started' }, 200, { 'Content-Type': 'applicaton/json' })
 
 @app.route('/recording/stop', methods = ['GET'])
 def recordingStop():
+    Camera.stopRecording()
     return json.dumps({ 'message': 'recording stopped' }, 200, { 'Content-Type': 'applicaton/json' })
 
 @app.route('/recording/is-recording', methods = ['GET'])
 def recordingIsRecording():
-    return json.dumps({ 'isRecording': False }, 200, { 'Content-Type': 'applicaton/json' })
-
-@app.route('/snapshot', methods = ['PUT'])
-def snapshot():
-    filename = Camera.snapshot()
-    obj = {}
-    obj['filename'] = filename
-    return jsonify(obj)
-
-@app.route('/snapshot/<path:path>', methods = ['GET'])
-def snapshotDetail(path):
-    if os.environ.get('CAMERA') == 'pi':
-        return send_from_directory('./src', path)
-    else:
-        return send_from_directory('./src', '1.jpg')
-
-def gen(camera):
-    """Video streaming generator function."""
-    while True:
-        frame = camera.get_frame()
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
+    isRecording = Camera.isCameraRecording()
+    return json.dumps({ 'isRecording': isRecording }, 200, { 'Content-Type': 'applicaton/json' })
 
 @app.route('/video_feed')
 def video_feed():

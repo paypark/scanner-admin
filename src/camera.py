@@ -10,11 +10,11 @@ class Camera(BaseCamera):
     """An emulated camera implementation that streams a repeated sequence of
     files 1.jpg, 2.jpg and 3.jpg at a rate of one frame per second."""
     imgs = [open(os.path.join(__location__, f + '.jpg'), 'rb').read() for f in ['1', '2', '3']]
+    isRecording = False
 
     def __init__(self, cameraSettings):
         super(Camera, self).__init__()
         Camera.shutter_speed = cameraSettings.getShutterSpeed()
-        Camera.isRecording = False
 
     @staticmethod
     def updateSettings(cameraSettings):
@@ -34,3 +34,17 @@ class Camera(BaseCamera):
     @staticmethod
     def snapshot():
         return str(uuid.uuid4()) + ".jpg"
+
+    @staticmethod
+    def startRecording():
+        if Camera.isRecording == False:
+            Camera.isRecording = True
+
+    @staticmethod
+    def stopRecording():
+        if Camera.isRecording == True:
+            Camera.isRecording = False
+
+    @staticmethod
+    def isCameraRecording():
+        return Camera.isRecording

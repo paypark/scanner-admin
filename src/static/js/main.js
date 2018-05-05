@@ -8,10 +8,6 @@ function onDecreaseButtonClick() {
     decrease();
 }
 
-function onSnapshotButtonClick() {
-    snapshot();
-}
-
 function onShowStreamButtonClick() {
     showStream(); 
 }
@@ -26,32 +22,43 @@ function onSaveSettingsButtonClick() { 
 
 // controllers
 
-function increase() {
+const increase = () => {
     console.log('increase()');
-    fetch('/increase');
-}
+    NetworkService.increase();
+};
 
-function decrease() {
+const decrease = () => {
     console.log('decrase()');
-    fetch('/decrease');
-}
+    NetworkService.decrease();
+};
 
-function snapshot() {
-    console.log('snapshot()');
-    fetch('/snapshot', {
-            method: 'PUT'
-        })
-        .then(response => response.json())
-        .then(({
-            filename
-        }) => snapshotShow(filename));
-}
+const getSettings = () => {
+    NetworkService.getSettings()
+        .then(settings => showUpdatedSettings(settings));
+};
 
-function getSettings() {
-    fetch('/settings')
-        .then(response => response.json())
-        .then(settings => updateSettings(settings));
-}
+const startRecording = () => {
+    console.log('startRecording()');
+    showRecording();
+    NetworkService.recordingStart();
+};
+
+const stopRecording = () => {
+    console.log('stopRecording()');
+    showNotRecording();
+    NetworkService.recordingEnd();
+};
+
+const isRecording = () => {
+    console.log('isRecording()');
+    NetworkService.recordingIsRecording()
+        .then(isRecordingResult => {
+            isRecordingResult
+                ? showRecording()
+                : showNotRecording();
+            setTimeout(() => isRecording(), 2000);
+        });
+};
 
 function saveSettings() {
     console.log('saveSettings()');
@@ -69,27 +76,60 @@ function saveSettings() {
         width: parseInt(widthInputElement.value, 10),
     };
 
-    fetch('/settings', { 
+    NetworkService.patchSettings(settings)
+        .then(() => console.log('success!!!'));
+}
+
+// network calls
+
+const SETTINGS_PATH = '/settings';
+const INSCREASE_PATH = '/increase';
+const DECREASE_PATH = '/decrease';
+const RECORDING_PATH = '/recording';
+
+class NetworkService {
+
+    static recordingStart() {
+        return fetch(RECORDING_PATH + '/start');
+    }
+
+    static recordingEnd() {
+        return fetch(RECORDING_PATH + '/stop');
+    }
+
+    static recordingIsRecording() {
+        return fetch(RECORDING_PATH + '/is-recording')
+            .then(response => response.json())
+            .then(({ isRecording }) => isRecording);
+    }
+
+    static increase() {
+        return fetch(INSCREASE_PATH);
+    }
+
+    static decrease() {
+        return fetch(DECREASE_PATH);
+    }
+
+    static getSettings() {
+        return fetch(SETTINGS_PATH)
+            .then(response => response.json());
+    }
+
+    static patchSettings(settings) {
+        const options = { 
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(settings)
-        })
-        .then(() => console.log('success!!!'));
+        };
+        return fetch(SETTINGS_PATH, options);
+    }
+    
 }
 
 // view manipulators
-
-function snapshotShow(fileName) {
-    const snapshotContainerElement = document.querySelector('.snapshot-container');
-    snapshotContainerElement.innerHTML = `<img src="/snapshot/${fileName}" class="snapshot" />`;
-}
-
-function snapshotHide() {
-    const snapshotContainerElement = document.querySelector('.snapshot-container');
-    snapshotContainerElement.innerHTML = '';
-}
 
 function showStream() {
     const streamContainerElement = document.querySelector('.stream-container');
@@ -101,7 +141,7 @@ function hideStream() {
     streamContainerElement.innerHTML = '';
 }
 
-function updateSettings(settings) {
+function showUpdatedSettings(settings) {
     const shutterSpeedInputElement = document.querySelector('.shutter-speed');
     shutterSpeedInputElement.value = settings.shutterSpeed;
 
@@ -118,8 +158,40 @@ function updateSettings(settings) {
     heightInputElement.value = settings.height;
 }
 
+function showRecording() {
+    console.log('showRecording()');
+    const recordingContainerElement = document.querySelector('.recording-container');
+    recordingContainerElement.innerHTML = '';
+
+    const imageElement = document.createElement('img');
+    imageElement.src = '/assets/icons/stop.svg';
+    const buttonElement = document.createElement('button');
+    buttonElement.addEventListener('click', () => stopRecording());
+    buttonElement.classList.add('recording-button');
+    buttonElement.appendChild(imageElement);
+
+    recordingContainerElement.appendChild(buttonElement);
+}
+
+function showNotRecording() {
+    console.log('showNotRecording()');
+    const recordingContainerElement = document.querySelector('.recording-container');
+    recordingContainerElement.innerHTML = '';
+
+    const imageElement = document.createElement('img');
+    imageElement.src = '/assets/icons/record.svg';
+    const buttonElement = document.createElement('button');
+    buttonElement.addEventListener('click', () => startRecording());
+    buttonElement.classList.add('recording-button');
+    buttonElement.appendChild(imageElement);
+
+    recordingContainerElement.appendChild(buttonElement);
+} 
+
 function initialize() {
     getSettings();
+    showNotRecording();
+    isRecording();
 }
 
 initialize();

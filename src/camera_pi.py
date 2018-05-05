@@ -7,6 +7,7 @@ from base_camera import BaseCamera
 class Camera(BaseCamera):
 
     cameraInstance = picamera.PiCamera()
+    isRecording = False
 
     def __init__(self, cameraSettings):
         super(Camera, self).__init__()
@@ -39,3 +40,19 @@ class Camera(BaseCamera):
         filename = str(uuid.uuid4()) + ".jpg"
         Camera.cameraInstance.capture(filename)
         return filename
+
+    @staticmethod
+    def startRecording():
+        if Camera.isRecording == False:
+            Camera.isRecording = True
+            Camera.cameraInstance.start_recording('my_video.h264')
+
+    @staticmethod
+    def stopRecording():
+        if Camera.isRecording == True:
+            Camera.isRecording = False
+            Camera.cameraInstance.stop_recording()
+
+    @staticmethod
+    def isCameraRecording():
+        return Camera.isRecording
