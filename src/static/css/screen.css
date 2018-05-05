@@ -1,6 +1,7 @@
 html,
 body {
     font-family: 'Roboto', sans-serif;
+    margin: 0;
 }
 
 .snapshot,
@@ -9,14 +10,15 @@ body {
 }
 
 .buttons {
+    padding: 8px;
     margin-bottom: 16px;
 }
 
 .settings {
     margin: 8px;
-    padding: 8px;
+    padding: 16px 8px 8px 8px;
     border: 1px dotted rgba(0, 0, 0, 0.25);
-    border-radius: 3px;
+    border-radius: 2px;
 }
 
 .settings-item {
@@ -36,7 +38,7 @@ body {
     height: 24px;
     line-height: 24px;
     border: 1px solid rgba(0, 0, 0, 0.25);
-    border-radius: 3px;
+    border-radius: 2px;
     outline: 0;
     padding: 0 8px;
 }
@@ -50,22 +52,31 @@ body {
     line-height: 30px;
 
     padding: 0 24px;
+    border: 0;
+    border-radius: 4px;
+    outline: 0;
 
-    background-color: #3f51b5;
-    color: rgb(255, 255, 255);
+    color: #3f51b5;
     font-size: 14px;
     font-weight: 500;
-    border-radius: 4px;
+}
 
+.sick-button-raised {
+    background-color: #3f51b5;
+    color: rgb(255, 255, 255);
     box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
-    outline: 0;
 }
 
 .sick-button:hover {
     cursor: pointer;
+    background-color: rgba(63, 81, 181, 0.15); /* aka #3f51b5 */
 }
 
-.sick-button:active {
+.sick-button-raised:hover {
+    background-color: inherit; /* aka #3f51b5 */
+}
+
+.sick-button-raised:active {
     box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
 }
 
