@@ -3,6 +3,7 @@ import time
 import uuid
 import picamera
 from base_camera import BaseCamera
+import datetime
 
 class Camera(BaseCamera):
 
@@ -16,9 +17,9 @@ class Camera(BaseCamera):
 
     @staticmethod
     def updateSettings(cameraSettings):
-        # Camera.cameraInstance.framerate = cameraSettings.getFrameRate()
-        # Camera.cameraInstance.shutter_speed = cameraSettings.getShutterSpeed()
-        # Camera.cameraInstance.iso = cameraSettings.getIso()
+        Camera.cameraInstance.framerate = cameraSettings.getFrameRate()
+        Camera.cameraInstance.shutter_speed = cameraSettings.getShutterSpeed()
+        Camera.cameraInstance.iso = cameraSettings.getIso()
         Camera.cameraInstance.resolution = (cameraSettings.getWidth(), cameraSettings.getHeight())
 
     @staticmethod
@@ -45,7 +46,10 @@ class Camera(BaseCamera):
     def startRecording():
         if Camera.isRecording == False:
             Camera.isRecording = True
-            Camera.cameraInstance.start_recording('my_video.h264')
+            timestamp = time.time()
+            dateTimeString = datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d-%H:%M:%S')
+            fileName = dateTimeString + ".h264"
+            Camera.cameraInstance.start_recording(fileName)
 
     @staticmethod
     def stopRecording():
