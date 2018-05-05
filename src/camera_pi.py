@@ -6,8 +6,9 @@ from base_camera import BaseCamera
 
 class Camera(BaseCamera):
 
+    Camera.cameraInstance = picamera.PiCamera()
+
     def __init__(self, cameraSettings):
-        Camera.cameraInstance = picamera.PiCamera()
         super(Camera, self).__init__()
         time.sleep(2)
         Camera.updateSettings(cameraSettings)
