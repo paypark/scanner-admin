@@ -50,12 +50,14 @@ class Camera(BaseCamera):
         if Camera.isRecording == False:
             Camera.isRecording = True
             filePath = Camera.generateFilePath()
+            print("startRecording() => " + filePath)
             Camera.cameraInstance.start_recording(filePath)
             Camera.splitRecordingLoop()
 
     @staticmethod
     def stopRecording():
         if Camera.isRecording == True:
+            print("stopRecording()")
             Camera.isRecording = False
             Camera.cameraInstance.stop_recording()
 
@@ -64,6 +66,7 @@ class Camera(BaseCamera):
         if Camera.isRecording == False:
             return
         filePath = Camera.generateFilePath()
+        print("splitRecordingLoop() => " + filePath)
         Camera.cameraInstance.split_recording(filePath)
         Camera.cameraInstance.wait_recording(Camera.FILE_RECORDING_DURATION_IN_SECONDS)
         if Camera.isRecording == True:
