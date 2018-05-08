@@ -5,6 +5,7 @@ import picamera
 from base_camera import BaseCamera
 
 from FilenameService import FilenameService
+from USBStorageService import USBStorageService
 
 class Camera(BaseCamera):
 
@@ -48,8 +49,8 @@ class Camera(BaseCamera):
     def startRecording():
         if Camera.isRecording == False:
             Camera.isRecording = True
-            fileName = FilenameService.generateTimeBasedFilename('h264')
-            Camera.cameraInstance.start_recording(fileName)
+            filePath = Camera.generateFilePath()
+            Camera.cameraInstance.start_recording(filePath)
             Camera.splitRecordingLoop()
 
     @staticmethod
@@ -62,8 +63,8 @@ class Camera(BaseCamera):
     def splitRecordingLoop():
         if Camera.isRecording == False:
             return
-        fileName = FilenameService.generateTimeBasedFilename('h264')
-        Camera.cameraInstance.split_recording(fileName)
+        filePath = Camera.generateFilePath()
+        Camera.cameraInstance.split_recording(filePath)
         Camera.cameraInstance.wait_recording(Camera.FILE_RECORDING_DURATION_IN_SECONDS)
         if Camera.isRecording == True:
             Camera.splitRecordingLoop()
@@ -71,3 +72,9 @@ class Camera(BaseCamera):
     @staticmethod
     def isCameraRecording():
         return Camera.isRecording
+
+    @staticmethod
+    def generateFilePath():
+        fileName = FilenameService.generateTimeBasedFilename('h264')
+        return USBStorageService.getPath() + "/" + fileName
+

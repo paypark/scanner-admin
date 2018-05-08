@@ -30,6 +30,10 @@ class USBStorageService(object):
         return True
 
     @staticmethod
+    def getPath():
+        return PartitionService.getMountPath()
+
+    @staticmethod
     def do_copy_file(src, dst):
         command = "cp -f " + src + " " + dst
         print(command)
