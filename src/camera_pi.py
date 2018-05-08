@@ -3,12 +3,14 @@ import time
 import uuid
 import picamera
 from base_camera import BaseCamera
-import datetime
+
+from FilenameService import FilenameService
 
 class Camera(BaseCamera):
 
     cameraInstance = picamera.PiCamera()
     isRecording = False
+    FILE_RECORDING_DURATION_IN_SECONDS = 60
 
     def __init__(self, cameraSettings):
         super(Camera, self).__init__()
@@ -46,16 +48,25 @@ class Camera(BaseCamera):
     def startRecording():
         if Camera.isRecording == False:
             Camera.isRecording = True
-            timestamp = time.time()
-            dateTimeString = datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d-%H:%M:%S')
-            fileName = dateTimeString + ".h264"
+            fileName = FilenameService.generateTimeBasedFilename('h264')
             Camera.cameraInstance.start_recording(fileName)
+            Camera.splitRecordingLoop()
 
     @staticmethod
     def stopRecording():
         if Camera.isRecording == True:
             Camera.isRecording = False
             Camera.cameraInstance.stop_recording()
+
+    @staticmethod
+    def splitRecordingLoop():
+        if Camera.isRecording == False:
+            return
+        fileName = FilenameService.generateTimeBasedFilename('h264')
+        Camera.cameraInstance.split_recording(fileName)
+        Camera.cameraInstance.wait_recording(Camera.FILE_RECORDING_DURATION_IN_SECONDS)
+        if Camera.isRecording == True:
+            Camera.splitRecordingLoop()
 
     @staticmethod
     def isCameraRecording():

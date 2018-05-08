@@ -2,6 +2,7 @@ import time
 import uuid
 import os
 from base_camera import BaseCamera
+from FilenameService import FilenameService
 
 __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -37,6 +38,8 @@ class Camera(BaseCamera):
 
     @staticmethod
     def startRecording():
+        filename = FilenameService.generateTimeBasedFilename('.h264')
+        print("filename: " + filename)
         if Camera.isRecording == False:
             Camera.isRecording = True
 

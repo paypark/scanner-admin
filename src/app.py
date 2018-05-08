@@ -1,8 +1,15 @@
+import sys
+
+sys.path.append('./src/services')
+
 #!/usr/bin/env python
 from importlib import import_module
 import os
 import json
 from flask import Flask, render_template, Response, jsonify, send_from_directory, send_file, request
+import random
+
+from USBStorageService import USBStorageService
 
 # import camera driver
 if os.environ.get('CAMERA'):
@@ -65,10 +72,21 @@ def recordingStop():
     Camera.stopRecording()
     return json.dumps({ 'message': 'recording stopped' }, 200, { 'Content-Type': 'applicaton/json' })
 
-@app.route('/recording/is-recording', methods = ['GET'])
-def recordingIsRecording():
-    isRecording = Camera.isCameraRecording()
-    return json.dumps({ 'isRecording': isRecording }, 200, { 'Content-Type': 'applicaton/json' })
+@app.route('/status', methods = ['GET'])
+def status():
+    body = dict(
+        isRecording=Camera.isCameraRecording(),
+        isUsbConnected=USBStorageService.isUSBStorageMounted()
+    )
+    return json.dumps(body, 200, { 'Content-Type': 'applicaton/json' })
+
+def gen(camera):
+    """Video streaming generator function."""
+    while True:
+        frame = camera.get_frame()
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
 
 @app.route('/video_feed')
 def video_feed():

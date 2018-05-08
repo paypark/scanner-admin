@@ -49,14 +49,17 @@ const stopRecording = () => {
     NetworkService.recordingEnd();
 };
 
-const isRecording = () => {
-    console.log('isRecording()');
-    NetworkService.recordingIsRecording()
-        .then(isRecordingResult => {
-            isRecordingResult
+const updateStatus = () => {
+    console.log('updateStatus()');
+    NetworkService.status()
+        .then(({ isRecording, isUsbConnected }) => {
+            isRecording
                 ? showRecording()
                 : showNotRecording();
-            setTimeout(() => isRecording(), 2000);
+            isUsbConnected
+                ? showUsbConnected()
+                : showUsbNotConnected();
+            setTimeout(() => updateStatus(), 2000);
         });
 };
 
@@ -97,10 +100,9 @@ class NetworkService {
         return fetch(RECORDING_PATH + '/stop');
     }
 
-    static recordingIsRecording() {
-        return fetch(RECORDING_PATH + '/is-recording')
-            .then(response => response.json())
-            .then(({ isRecording }) => isRecording);
+    static status() {
+        return fetch('/status')
+            .then(response => response.json());
     }
 
     static increase() {
@@ -188,10 +190,21 @@ function showNotRecording() {
     recordingContainerElement.appendChild(buttonElement);
 } 
 
+function showUsbConnected() {
+    const usbIconSvgElement = document.querySelector('.usb-connected');
+    usbIconSvgElement.classList.remove('inactive-icon');
+}
+
+function showUsbNotConnected() {
+    const usbIconSvgElement = document.querySelector('.usb-connected');
+    usbIconSvgElement.classList.add('inactive-icon');
+}
+
 function initialize() {
     getSettings();
     showNotRecording();
-    isRecording();
+    updateStatus();
+    showUsbNotConnected();
 }
 
 initialize();
