@@ -12,13 +12,15 @@ class USBStorageService(object):
             raise Exception('insufficient disk space available')
         USBStorageService.do_copy_file(src, PartitionService.getMountPath())
 
+
+    @staticmethod
+    def mount():
+        print('[USBStorageService] mount()')
+        return PartitionService.mount()
+
     @staticmethod
     def unmount():
         print('[USBStorageService] unmount()')
-        # if not EnvironmentService.isPi():
-        #     print('[USBStorageService] unmount() 1')
-        #     time.sleep(2)
-        #     return
 
         if PartitionService.doesUnmountablePartitionExist():
             print('[USBStorageService] unmount() 2')
@@ -35,7 +37,7 @@ class USBStorageService(object):
     @staticmethod
     def isUSBStorageMounted():
         try:
-            PartitionService.ensureIsMounted()
+            PartitionService.isMounted()
         except:
             return False
         return True

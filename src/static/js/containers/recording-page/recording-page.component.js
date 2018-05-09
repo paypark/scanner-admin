@@ -41,11 +41,16 @@
       this.store.dispatch(this.recordingPageActions.stopRecording());
     }
 
+    onMountClick() {
+      console.log('onMountClick()');
+      this.store.dispatch(this.recordingPageActions.setUsbMounted(true));
+      this.networkService.mountUsb();
+    }
+
     onUnmountClick() {
       console.log('onUnmountClick()');
       this.store.dispatch(this.recordingPageActions.setUsbMounted(false));
-      this.networkService
-        .unmountUsb()
+      this.networkService.unmountUsb()
     }
 
     onSettingsSaveClick() {

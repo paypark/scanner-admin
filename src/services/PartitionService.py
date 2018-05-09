@@ -12,6 +12,23 @@ class PartitionService(object):
         return PartitionService.mountPath
 
     @staticmethod
+    def isMounted():
+        print('[PartitionService] getMountPath()')
+        return PartitionService.doesUnmountablePartitionExist()
+
+    @staticmethod
+    def mount():
+        print('[PartitionService] getMountPath()')
+        if not PartitionService.doesMountablePartitionExist():
+            return 500, "No mountable partition exists"
+
+        PartitionService.do_mount()
+        if PartitionService.doesUnmountablePartitionExist():
+            return 200, "Success"
+
+        return 500, "Error during mounting"
+
+    @staticmethod
     def ensureIsMounted():
         print('[PartitionService] ensureIsMounted()')
         if PartitionService.doesUnmountablePartitionExist():
@@ -35,12 +52,10 @@ class PartitionService(object):
 
     @staticmethod
     def getLines(input):
-        print('[PartitionService] getLines()')
         return input.splitlines()
 
     @staticmethod
     def getColumns(input):
-        print('[PartitionService] getColumns()')
         stranglyEncoded = input.split()
         columns = []
         for item in stranglyEncoded:
@@ -49,7 +64,6 @@ class PartitionService(object):
 
     @staticmethod
     def partitionFactory(input):
-        print('[PartitionService] partitionFactory()')
         columns = PartitionService.getColumns(input)
         return dict(
             name = columns[0],
@@ -60,7 +74,6 @@ class PartitionService(object):
 
     @staticmethod
     def getMountablePartition():
-        print('[PartitionService] getMountablePartition()')
         partitions = PartitionService.getPartitions()
         for partition in partitions:
             if PartitionService.isValidPartition(partition) and not PartitionService.isMounted(partition['path']):
@@ -69,7 +82,6 @@ class PartitionService(object):
 
     @staticmethod
     def doesMountablePartitionExist():
-        print('[PartitionService] doesMountablePartitionExist()')
         partitions = PartitionService.getPartitions()
         for partition in partitions:
             if PartitionService.isValidPartition(partition) and not PartitionService.isMounted(partition['path']):
@@ -78,7 +90,6 @@ class PartitionService(object):
 
     @staticmethod
     def doesUnmountablePartitionExist():
-        print('[PartitionService] doesUnmountablePartitionExist()')
         partitions = PartitionService.getPartitions()
         for partition in partitions:
             if PartitionService.isValidPartition(partition) and PartitionService.isMounted(partition['path']):
@@ -87,12 +98,10 @@ class PartitionService(object):
 
     @staticmethod
     def isLargerThan1GB(sizeString):
-        print('[PartitionService] isLargerThan1GB()')
         return sizeString[-1:] == 'G'
 
     @staticmethod
     def isValidPartition(input):
-        print('[PartitionService] isValidPartition()')
         if not input['name'].startswith('sd'):
             return False
         if input['type'] != 'part':

@@ -70,6 +70,14 @@
       return this._executeAndUnpack(options);
     }
 
+    mountUsb() {
+      const options = {
+        method: 'GET',
+        url: USB_PATH + '/mount',
+      };
+      return this._executeAndUnpack(options);
+    }
+
     unmountUsb() {
       const options = {
         method: 'GET',

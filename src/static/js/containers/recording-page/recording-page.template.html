@@ -45,6 +45,11 @@
             <md-icon md-svg-src="assets/icons/stop.svg"></md-icon>
         </md-button>
 
+        <md-button ng-show="!$ctrl.recordingPage.isUsbMounted && !$ctrl.recordingPage.isRecording" class="md-fab recording-fab-button"
+            ng-click="$ctrl.onMountClick()">
+            <md-icon md-svg-src="assets/icons/refresh.svg"></md-icon>
+        </md-button>
+
     </div>
 
 </div>

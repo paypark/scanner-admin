@@ -72,6 +72,14 @@ def recordingStop():
     Camera.stopRecording()
     return json.dumps({ 'message': 'recording stopped' }, 200, { 'Content-Type': 'applicaton/json' })
 
+@app.route('/usb/mount', methods = ['GET'])
+def usbMount():
+    if Camera.isCameraRecording() == True:
+        return json.dumps({ 'message': 'can not mount while camera is recording' }, 400, { 'Content-Type': 'applicaton/json' })
+
+    statusCode, message = USBStorageService.mount()
+    return json.dumps({ 'message': message }, statusCode, { 'Content-Type': 'applicaton/json' })
+
 @app.route('/usb/unmount', methods = ['GET'])
 def usbUnmount():
     if Camera.isCameraRecording() == True:
@@ -81,6 +89,7 @@ def usbUnmount():
         USBStorageService.unmount()
         return json.dumps({ 'message': 'unmounting successful' }, 200, { 'Content-Type': 'applicaton/json' })
     except:
+        print('ERROR')
         return json.dumps({ 'message': 'unmounting error' }, 500, { 'Content-Type': 'applicaton/json' })
 
 
