@@ -16,10 +16,12 @@ class USBStorageService(object):
     def unmount():
         print('[USBStorageService] unmount()')
         if not EnvironmentService.isPi():
+            print('[USBStorageService] unmount() 1')
             time.sleep(2)
             return
 
         if PartitionService.doesUnmountablePartitionExist():
+            print('[USBStorageService] unmount() 2')
             PartitionService.do_unmount()
         else:
             print('partition was not mounted correctly (2)')
