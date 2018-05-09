@@ -84,6 +84,11 @@ class PartitionService(object):
     def doesMountablePartitionExist():
         partitions = PartitionService.getPartitions()
         for partition in partitions:
+            print("##############################")
+            print("doesMountablePartitionExist()")
+            print("  partition.name: " + partition['name'])
+            print("  partition.path: " + partition['path'])
+            print("  partition is mounted: " + str(PartitionService.isMounted(partition['path'])))
             if PartitionService.isValidPartition(partition) and not PartitionService.isMounted(partition['path']):
                 return True
         return False
