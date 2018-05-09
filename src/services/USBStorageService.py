@@ -15,10 +15,10 @@ class USBStorageService(object):
     @staticmethod
     def unmount():
         print('[USBStorageService] unmount()')
-        if not EnvironmentService.isPi():
-            print('[USBStorageService] unmount() 1')
-            time.sleep(2)
-            return
+        # if not EnvironmentService.isPi():
+        #     print('[USBStorageService] unmount() 1')
+        #     time.sleep(2)
+        #     return
 
         if PartitionService.doesUnmountablePartitionExist():
             print('[USBStorageService] unmount() 2')
