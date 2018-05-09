@@ -34,11 +34,13 @@
     onRecordClick() {
       console.log('onRecordClick()');
       this.store.dispatch(this.recordingPageActions.startRecording());
+      this.networkService.recordingStart();
     }
 
     onStopClick() {
       console.log('onStopClick()');
       this.store.dispatch(this.recordingPageActions.stopRecording());
+      this.networkService.recordingStop();
     }
 
     onMountClick() {
