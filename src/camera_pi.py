@@ -2,6 +2,7 @@ import io
 import time
 import uuid
 import picamera
+import threading
 from base_camera import BaseCamera
 
 from FilenameService import FilenameService
@@ -52,7 +53,7 @@ class Camera(BaseCamera):
             filePath = Camera.generateFilePath()
             print("startRecording() => " + filePath)
             Camera.cameraInstance.start_recording(filePath)
-            Camera.splitRecordingLoop()
+            threading.Thread(target=Camera.splitRecordingLoop).start()
 
     @staticmethod
     def stopRecording():
