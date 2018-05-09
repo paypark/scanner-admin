@@ -64,8 +64,11 @@ def settings():
 
 @app.route('/recording/start', methods = ['GET'])
 def recordingStart():
-    Camera.startRecording()
-    return json.dumps({ 'message': 'recording started' }, 200, { 'Content-Type': 'applicaton/json' })
+    try:
+        Camera.startRecording()
+        return json.dumps({ 'message': 'recording started' }, 200, { 'Content-Type': 'applicaton/json' })
+    except:
+        return json.dumps({ 'message': 'recording starting failed' }, 500, { 'Content-Type': 'applicaton/json' })
 
 @app.route('/recording/stop', methods = ['GET'])
 def recordingStop():
