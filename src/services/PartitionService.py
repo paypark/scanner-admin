@@ -76,14 +76,6 @@ class PartitionService(object):
         raise Exception('no mountable partition found!')
 
     @staticmethod
-    def getUnmountablePartition()
-        partitions = PartitionService.getPartitions()
-        for partition in partitions:
-            if PartitionService.isValidPartition(partition) and PartitionService.isMounted(partition['path']):
-                return partition
-        raise Exception('no unmountable partition found!')
-
-    @staticmethod
     def doesMountablePartitionExist():
         partitions = PartitionService.getPartitions()
         # print("##############################")
