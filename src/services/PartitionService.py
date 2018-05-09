@@ -86,7 +86,7 @@ class PartitionService(object):
         print("##############################")
         print("doesMountablePartitionExist()")
         for partition in partitions:
-            if input['name'].startswith('sd'):
+            if input['partition'].startswith('sd'):
                 print("  partition => name: " + partition['name'] + ", path: " + partition['path'] + ", mounted: " + str(PartitionService.isMounted(partition['path'])))
             if PartitionService.isValidPartition(partition) and not PartitionService.isMounted(partition['path']):
                 return True
@@ -114,11 +114,12 @@ class PartitionService(object):
 
     @staticmethod
     def isMounted(partitionPath):
-        print('[PartitionService] isMounted()')
         mountedPartitions = psutil.disk_partitions()
         for partition in mountedPartitions:
             if partition.device == partitionPath:
+                print("[PartitionService] isMounted(): " + partitionPath + ": True")
                 return True
+        print("[PartitionService] isMounted(): " + partitionPath + ": False")
         return False
 
     @staticmethod
