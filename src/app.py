@@ -102,7 +102,7 @@ def status():
     return json.dumps(body, 200, { 'Content-Type': 'applicaton/json' })
 
 def gen(camera):
-    """Video streaming generator function."""
+    """Video streaming generator function"""
     while True:
         frame = camera.get_frame()
         yield (b'--frame\r\n'
