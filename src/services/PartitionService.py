@@ -86,7 +86,7 @@ class PartitionService(object):
         print("##############################")
         print("doesMountablePartitionExist()")
         for partition in partitions:
-            if input['partition'].startswith('sd'):
+            if partition['name'].startswith('sd'):
                 print("  partition => name: " + partition['name'] + ", path: " + partition['path'] + ", mounted: " + str(PartitionService.isMounted(partition['path'])))
             if PartitionService.isValidPartition(partition) and not PartitionService.isMounted(partition['path']):
                 return True
