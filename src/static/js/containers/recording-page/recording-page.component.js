@@ -44,6 +44,8 @@
     onUnmountClick() {
       console.log('onUnmountClick()');
       this.store.dispatch(this.recordingPageActions.setUsbMounted(false));
+      this.networkService
+        .unmountUsb()
     }
 
     onSettingsSaveClick() {
