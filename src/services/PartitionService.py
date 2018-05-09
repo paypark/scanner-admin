@@ -8,17 +8,12 @@ class PartitionService(object):
 
     @staticmethod
     def getMountPath():
-        print('[PartitionService] getMountPath()')
+        # print('[PartitionService] getMountPath()')
         return PartitionService.mountPath
 
     @staticmethod
-    def isMounted():
-        print('[PartitionService] getMountPath()')
-        return PartitionService.doesUnmountablePartitionExist()
-
-    @staticmethod
     def mount():
-        print('[PartitionService] getMountPath()')
+        # print('[PartitionService] getMountPath()')
         if not PartitionService.doesMountablePartitionExist():
             return 500, "No mountable partition exists"
 
@@ -30,7 +25,7 @@ class PartitionService(object):
 
     @staticmethod
     def ensureIsMounted():
-        print('[PartitionService] ensureIsMounted()')
+        # print('[PartitionService] ensureIsMounted()')
         if PartitionService.doesUnmountablePartitionExist():
             return
         if PartitionService.doesMountablePartitionExist():
@@ -41,7 +36,7 @@ class PartitionService(object):
 
     @staticmethod
     def getPartitions():
-        print('[PartitionService] getPartitions()')
+        # print('[PartitionService] getPartitions()')
         command = "lsblk -l"
         output = CommandLineService.run_command(command)
         lines = PartitionService.getLines(output)
@@ -81,13 +76,21 @@ class PartitionService(object):
         raise Exception('no mountable partition found!')
 
     @staticmethod
+    def getUnmountablePartition()
+        partitions = PartitionService.getPartitions()
+        for partition in partitions:
+            if PartitionService.isValidPartition(partition) and PartitionService.isMounted(partition['path']):
+                return partition
+        raise Exception('no unmountable partition found!')
+
+    @staticmethod
     def doesMountablePartitionExist():
         partitions = PartitionService.getPartitions()
-        print("##############################")
-        print("doesMountablePartitionExist()")
+        # print("##############################")
+        # print("doesMountablePartitionExist()")
         for partition in partitions:
-            if partition['name'].startswith('sd'):
-                print("  partition => name: " + partition['name'] + ", path: " + partition['path'] + ", mounted: " + str(PartitionService.isMounted(partition['path'])))
+            # if partition['name'].startswith('sd'):
+                # print("  partition => name: " + partition['name'] + ", path: " + partition['path'] + ", mounted: " + str(PartitionService.isMounted(partition['path'])))
             if PartitionService.isValidPartition(partition) and not PartitionService.isMounted(partition['path']):
                 return True
         return False
@@ -96,8 +99,8 @@ class PartitionService(object):
     def doesUnmountablePartitionExist():
         partitions = PartitionService.getPartitions()
         for partition in partitions:
-            if partition['name'].startswith('sd'):
-                print("  partition => name: " + partition['name'] + ", path: " + partition['path'] + ", mounted: " + str(PartitionService.isMounted(partition['path'])))
+            # if partition['name'].startswith('sd'):
+                # print("  partition => name: " + partition['name'] + ", path: " + partition['path'] + ", mounted: " + str(PartitionService.isMounted(partition['path'])))
             if PartitionService.isValidPartition(partition) and PartitionService.isMounted(partition['path']):
                 return True
         return False
@@ -118,17 +121,17 @@ class PartitionService(object):
     def isMounted(partitionPath):
         mountedPartitions = psutil.disk_partitions()
         for partition in mountedPartitions:
-            print("[PartitionService] isMounted(): [mounted: " + partition.device + "]")
+            # print("[PartitionService] isMounted(): [mounted: " + partition.device + "]")
             if partition.device == partitionPath:
-                print("[PartitionService] isMounted(): " + partitionPath + ": True")
+                # print("[PartitionService] isMounted(): " + partitionPath + ": True")
                 return True
-        print("[PartitionService] isMounted(): " + partitionPath + ": False")
+        # print("[PartitionService] isMounted(): " + partitionPath + ": False")
         return False
 
     @staticmethod
     def do_mount():
-        print('[PartitionService] do_mount()')
-        print("mount(): " + PartitionService.mountPath)
+        # print('[PartitionService] do_mount()')
+        # print("mount(): " + PartitionService.mountPath)
         partition = PartitionService.getMountablePartition()
 
         if not os.path.exists(PartitionService.mountPath):
@@ -141,8 +144,8 @@ class PartitionService(object):
 
     @staticmethod
     def do_unmount():
-        print('[PartitionService] do_unmount()')
-        print("do_unmount(): " + PartitionService.mountPath)
+        # print('[PartitionService] do_unmount()')
+        # print("do_unmount(): " + PartitionService.mountPath)
         command = "umount " + PartitionService.mountPath
         print(command)
         result = CommandLineService.run_command(command)
@@ -150,15 +153,15 @@ class PartitionService(object):
 
     @staticmethod
     def getNumberOfFreeBytes():
-        print('[PartitionService] getNumberOfFreeBytes()')
+        # print('[PartitionService] getNumberOfFreeBytes()')
         statvfs = os.statvfs(PartitionService.mountPath)
         return statvfs.f_frsize * statvfs.f_bavail
 
     @staticmethod
     def isSufficientDiskSpaceAvailable(filePath):
-        print('[PartitionService] isSufficientDiskSpaceAvailable()')
+        # print('[PartitionService] isSufficientDiskSpaceAvailable()')
         numberOfFreeBytes = PartitionService.getNumberOfFreeBytes()
         fileSizeInBytes = os.path.getsize(filePath)
-        print("isSufficientDiskSpaceAvailable(): numberOfFreeBytes: " + str(numberOfFreeBytes))
-        print("isSufficientDiskSpaceAvailable(): fileSizeInBytes  : " + str(fileSizeInBytes))
+        # print("isSufficientDiskSpaceAvailable(): numberOfFreeBytes: " + str(numberOfFreeBytes))
+        # print("isSufficientDiskSpaceAvailable(): fileSizeInBytes  : " + str(fileSizeInBytes))
         return numberOfFreeBytes > fileSizeInBytes
