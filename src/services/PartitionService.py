@@ -111,6 +111,7 @@ class PartitionService(object):
 
     @staticmethod
     def do_unmount():
+        print("do_unmount(): " + PartitionService.mountPath)
         command = "umount " + PartitionService.mountPath
         print(command)
         result = CommandLineService.run_command(command)
