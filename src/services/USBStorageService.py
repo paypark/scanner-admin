@@ -36,11 +36,11 @@ class USBStorageService(object):
 
     @staticmethod
     def isUSBStorageMounted():
+        print('[USBStorageService] isUSBStorageMounted()')
         try:
-            PartitionService.isMounted()
+            return PartitionService.isMounted()
         except:
             return False
-        return True
 
     @staticmethod
     def getPath():
