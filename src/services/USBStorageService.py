@@ -38,8 +38,7 @@ class USBStorageService(object):
     def isUSBStorageMounted():
         print('[USBStorageService] isUSBStorageMounted()')
         try:
-            mountPath = PartitionService.getMountPath()
-            return PartitionService.isMounted(mountPath)
+            return PartitionService.doesUnmountablePartitionExist()
         except:
             return False
 
