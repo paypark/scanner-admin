@@ -8,10 +8,12 @@ class PartitionService(object):
 
     @staticmethod
     def getMountPath():
+        print('[PartitionService] getMountPath()')
         return PartitionService.mountPath
 
     @staticmethod
     def ensureIsMounted():
+        print('[PartitionService] ensureIsMounted()')
         if PartitionService.doesUnmountablePartitionExist():
             return
         if PartitionService.doesMountablePartitionExist():
@@ -22,6 +24,7 @@ class PartitionService(object):
 
     @staticmethod
     def getPartitions():
+        print('[PartitionService] getPartitions()')
         command = "lsblk -l"
         output = CommandLineService.run_command(command)
         lines = PartitionService.getLines(output)
@@ -32,10 +35,12 @@ class PartitionService(object):
 
     @staticmethod
     def getLines(input):
+        print('[PartitionService] getLines()')
         return input.splitlines()
 
     @staticmethod
     def getColumns(input):
+        print('[PartitionService] getColumns()')
         stranglyEncoded = input.split()
         columns = []
         for item in stranglyEncoded:
@@ -44,6 +49,7 @@ class PartitionService(object):
 
     @staticmethod
     def partitionFactory(input):
+        print('[PartitionService] partitionFactory()')
         columns = PartitionService.getColumns(input)
         return dict(
             name = columns[0],
@@ -54,6 +60,7 @@ class PartitionService(object):
 
     @staticmethod
     def getMountablePartition():
+        print('[PartitionService] getMountablePartition()')
         partitions = PartitionService.getPartitions()
         for partition in partitions:
             if PartitionService.isValidPartition(partition) and not PartitionService.isMounted(partition['path']):
@@ -62,6 +69,7 @@ class PartitionService(object):
 
     @staticmethod
     def doesMountablePartitionExist():
+        print('[PartitionService] doesMountablePartitionExist()')
         partitions = PartitionService.getPartitions()
         for partition in partitions:
             if PartitionService.isValidPartition(partition) and not PartitionService.isMounted(partition['path']):
@@ -70,6 +78,7 @@ class PartitionService(object):
 
     @staticmethod
     def doesUnmountablePartitionExist():
+        print('[PartitionService] doesUnmountablePartitionExist()')
         partitions = PartitionService.getPartitions()
         for partition in partitions:
             if PartitionService.isValidPartition(partition) and PartitionService.isMounted(partition['path']):
@@ -78,10 +87,12 @@ class PartitionService(object):
 
     @staticmethod
     def isLargerThan1GB(sizeString):
+        print('[PartitionService] isLargerThan1GB()')
         return sizeString[-1:] == 'G'
 
     @staticmethod
     def isValidPartition(input):
+        print('[PartitionService] isValidPartition()')
         if not input['name'].startswith('sd'):
             return False
         if input['type'] != 'part':
@@ -90,6 +101,7 @@ class PartitionService(object):
 
     @staticmethod
     def isMounted(partitionPath):
+        print('[PartitionService] isMounted()')
         mountedPartitions = psutil.disk_partitions()
         for partition in mountedPartitions:
             if partition.device == partitionPath:
@@ -98,6 +110,7 @@ class PartitionService(object):
 
     @staticmethod
     def do_mount():
+        print('[PartitionService] do_mount()')
         print("mount(): " + PartitionService.mountPath)
         partition = PartitionService.getMountablePartition()
 
@@ -111,6 +124,7 @@ class PartitionService(object):
 
     @staticmethod
     def do_unmount():
+        print('[PartitionService] do_unmount()')
         print("do_unmount(): " + PartitionService.mountPath)
         command = "umount " + PartitionService.mountPath
         print(command)
@@ -119,11 +133,13 @@ class PartitionService(object):
 
     @staticmethod
     def getNumberOfFreeBytes():
+        print('[PartitionService] getNumberOfFreeBytes()')
         statvfs = os.statvfs(PartitionService.mountPath)
         return statvfs.f_frsize * statvfs.f_bavail
 
     @staticmethod
     def isSufficientDiskSpaceAvailable(filePath):
+        print('[PartitionService] isSufficientDiskSpaceAvailable()')
         numberOfFreeBytes = PartitionService.getNumberOfFreeBytes()
         fileSizeInBytes = os.path.getsize(filePath)
         print("isSufficientDiskSpaceAvailable(): numberOfFreeBytes: " + str(numberOfFreeBytes))
