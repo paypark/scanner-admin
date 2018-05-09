@@ -4,6 +4,7 @@
   const INSCREASE_PATH = '/increase';
   const DECREASE_PATH = '/decrease';
   const RECORDING_PATH = '/recording';
+  const USB_PATH = '/usb';
 
   class NetworkService {
 
@@ -17,9 +18,7 @@
         method: 'GET',
         url: RECORDING_PATH + '/start',
       };
-      return this
-        .$http(options)
-        .then(response => response.data);
+      return this._executeAndUnpack(options);
     }
 
     recordingEnd() {
@@ -27,9 +26,7 @@
         method: 'GET',
         url: RECORDING_PATH + '/stop',
       };
-      return this
-        .$http(options)
-        .then(response => response.data);
+      return this._executeAndUnpack(options);
     }
 
     status() {
@@ -37,9 +34,7 @@
         method: 'GET',
         url: '/status',
       };
-      return this
-        .$http(options)
-        .then(response => response.data);
+      return this._executeAndUnpack(options);
     }
 
     increase() {
@@ -47,9 +42,7 @@
         method: 'GET',
         url: INSCREASE_PATH,
       };
-      return this
-        .$http(options)
-        .then(response => response.data);
+      return this._executeAndUnpack(options);
     }
 
     decrease() {
@@ -57,9 +50,7 @@
         method: 'GET',
         url: DECREASE_PATH,
       };
-      return this
-        .$http(options)
-        .then(response => response.data);
+      return this._executeAndUnpack(options);
     }
 
     getSettings() {
@@ -67,9 +58,7 @@
         method: 'GET',
         url: SETTINGS_PATH,
       };
-      return this
-        .$http(options)
-        .then(response => response.data);
+      return this._executeAndUnpack(options);
     }
 
     patchSettings(settings) {
@@ -78,6 +67,18 @@
         url: SETTINGS_PATH,
         data: settings,
       };
+      return this._executeAndUnpack(options);
+    }
+
+    unmountUsb() {
+      const options = {
+        method: 'GET',
+        url: USB_PATH + '/unmount'
+      };
+      return this._executeAndUnpack(options);
+    }
+
+    _executeAndUnpack(options) {
       return this
         .$http(options)
         .then(response => response.data);
