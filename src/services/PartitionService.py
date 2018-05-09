@@ -118,6 +118,7 @@ class PartitionService(object):
     def isMounted(partitionPath):
         mountedPartitions = psutil.disk_partitions()
         for partition in mountedPartitions:
+            print("[PartitionService] isMounted(): [mounted: " + partition.device + "]")
             if partition.device == partitionPath:
                 print("[PartitionService] isMounted(): " + partitionPath + ": True")
                 return True
