@@ -40,7 +40,7 @@
     onStopClick() {
       console.log('onStopClick()');
       this.store.dispatch(this.recordingPageActions.stopRecording());
-      this.networkService.recordingStop();
+      this.networkService.recordingEnd();
     }
 
     onMountClick() {
