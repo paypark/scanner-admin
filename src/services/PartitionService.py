@@ -96,6 +96,8 @@ class PartitionService(object):
     def doesUnmountablePartitionExist():
         partitions = PartitionService.getPartitions()
         for partition in partitions:
+            if partition['name'].startswith('sd'):
+                print("  partition => name: " + partition['name'] + ", path: " + partition['path'] + ", mounted: " + str(PartitionService.isMounted(partition['path'])))
             if PartitionService.isValidPartition(partition) and PartitionService.isMounted(partition['path']):
                 return True
         return False
