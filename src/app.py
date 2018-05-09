@@ -9,6 +9,7 @@ import json
 from flask import Flask, render_template, Response, jsonify, send_from_directory, send_file, request
 import random
 
+from EnvironmentService import EnvironmentService
 from USBStorageService import USBStorageService
 
 # import camera driver
@@ -36,8 +37,7 @@ def send_file(filename):
 
 @app.route('/')
 def index():
-    """Video streaming home page."""
-    return render_template('index.html')
+    return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/increase')
 def increase():
@@ -51,12 +51,12 @@ def decrease():
     obj['message'] = "decreased"
     return jsonify(obj)
 
-@app.route('/settings', methods = ['GET', 'PATCH'])
+@app.route('/settings', methods = ['GET', 'POST'])
 def settings():
     if request.method == 'GET':
         return jsonify(captureSettings.toJSON())
 
-    if request.method == 'PATCH':
+    if request.method == 'POST':
         jsonObject = request.get_json()
         captureSettings.set(jsonObject)
         Camera.updateSettings(captureSettings)

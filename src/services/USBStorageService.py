@@ -1,4 +1,7 @@
+import time
+
 from PartitionService import PartitionService
+from EnvironmentService import EnvironmentService
 
 class USBStorageService(object):
 
@@ -11,6 +14,10 @@ class USBStorageService(object):
 
     @staticmethod
     def unmount():
+        if not EnvironmentService.isPi():
+            time.sleep(2)
+            return
+
         if PartitionService.doesUnmountablePartitionExist():
             PartitionService.do_unmount()
         else:

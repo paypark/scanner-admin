@@ -40,12 +40,14 @@ const getSettings = () => {
 const startRecording = () => {
     console.log('startRecording()');
     showRecording();
+    hideUnmount();
     NetworkService.recordingStart();
 };
 
 const stopRecording = () => {
     console.log('stopRecording()');
     showNotRecording();
+    showRecording();
     NetworkService.recordingEnd();
 };
 
@@ -53,12 +55,15 @@ const updateStatus = () => {
     console.log('updateStatus()');
     NetworkService.status()
         .then(({ isRecording, isUsbConnected }) => {
-            isRecording
+            window.isRecording
                 ? showRecording()
                 : showNotRecording();
-            isUsbConnected
+            window.isUsbConnectedisUsbConnected
                 ? showUsbConnected()
                 : showUsbNotConnected();
+            window.isUsbConnected && !isRecording
+                ? showUnmount()
+                : hideUnmount();
             setTimeout(() => updateStatus(), 2000);
         });
 };
@@ -170,6 +175,7 @@ function showRecording() {
     const buttonElement = document.createElement('button');
     buttonElement.addEventListener('click', () => stopRecording());
     buttonElement.classList.add('recording-button');
+    buttonElement.classList.add('fab-button');
     buttonElement.appendChild(imageElement);
 
     recordingContainerElement.appendChild(buttonElement);
@@ -185,6 +191,7 @@ function showNotRecording() {
     const buttonElement = document.createElement('button');
     buttonElement.addEventListener('click', () => startRecording());
     buttonElement.classList.add('recording-button');
+    buttonElement.classList.add('fab-button');
     buttonElement.appendChild(imageElement);
 
     recordingContainerElement.appendChild(buttonElement);
@@ -200,11 +207,34 @@ function showUsbNotConnected() {
     usbIconSvgElement.classList.add('inactive-icon');
 }
 
+function showUnmount() {
+    const unmountContainerElement = document.querySelector('.unmount-container');
+    unmountContainerElement.innerHTML = '';
+
+    const imageElement = document.createElement('img');
+    imageElement.src = '/assets/icons/eject.svg';
+    const buttonElement = document.createElement('button');
+    buttonElement.addEventListener('click', () => console.log('unmount...'));
+    buttonElement.classList.add('unmount-button');
+    buttonElement.classList.add('fab-button');
+    buttonElement.appendChild(imageElement);
+
+    unmountContainerElement.appendChild(buttonElement);
+}
+
+function hideUnmount() {
+    const unmountContainerElement = document.querySelector('.unmount-container');
+    unmountContainerElement.innerHTML = '';
+}
+
 function initialize() {
     getSettings();
     showNotRecording();
     updateStatus();
     showUsbNotConnected();
+
+    //
+    showUnmount();
 }
 
 initialize();
