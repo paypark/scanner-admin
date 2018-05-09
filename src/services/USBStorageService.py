@@ -38,7 +38,8 @@ class USBStorageService(object):
     def isUSBStorageMounted():
         print('[USBStorageService] isUSBStorageMounted()')
         try:
-            return PartitionService.isMounted()
+            mountPath = PartitionService.getMountPath()
+            return PartitionService.isMounted(mountPath)
         except:
             return False
 
