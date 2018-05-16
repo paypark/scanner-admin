@@ -20,6 +20,12 @@ RUN apt-get -q -y update && apt-get install -y -qq \
   autoconf automake libtool \
   git-core
 
+# environment
+ENV MAKE_JOBS 32
+ENV MAKE_FLAGS -j ${MAKE_JOBS} --quiet
+ENV CMAKE_FLAGS -j ${MAKE_JOBS} --quiet
+ENV TEMP /usr/compile
+
 # numpy
 WORKDIR ${TEMP}
 RUN git clone --quiet https://github.com/numpy/numpy
