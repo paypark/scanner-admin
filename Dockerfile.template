@@ -1,12 +1,51 @@
 # base-image for python on any machine using a template variable,
 # see more about dockerfile templates here:http://docs.resin.io/pages/deployment/docker-templates
-FROM resin/%%RESIN_MACHINE_NAME%%-python
+FROM resin/raspberrypi3-python
 
 # use apt-get if you need to install dependencies,
 # for instance if you need ALSA sound utils, just uncomment the lines below.
 # RUN apt-get update && apt-get install -yq \
 #    alsa-utils libasound2-dev && \
 #    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# init
+RUN apt-get -q -y update && apt-get install -y --no-install-recommends apt-utils
+RUN apt-get -q -y update && apt-get install -y -qq \
+  build-essential \
+  cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev \
+  python3-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev \
+  curl \
+  nginx \
+  python3-pip \
+  autoconf automake libtool \
+  git-core
+
+# numpy
+WORKDIR ${TEMP}
+RUN git clone --quiet https://github.com/numpy/numpy
+WORKDIR ${TEMP}/numpy
+RUN pip3 install Cython
+RUN git checkout tags/v1.14.3
+RUN pip3 install .
+
+# step 1 => COMPILE OpenCV
+WORKDIR ${TEMP}
+RUN git clone --quiet https://github.com/opencv/opencv
+WORKDIR ${TEMP}/opencv
+RUN git checkout tags/3.3.0
+WORKDIR ${TEMP}
+RUN mkdir build_opencv
+WORKDIR ${TEMP}/build_opencv
+# stg
+RUN cmake ${CMAKE_FLAGS} \
+  -D CMAKE_BUILD_TYPE=RELEASE \
+  -D CMAKE_INSTALL_PREFIX=/usr/local \
+  -D INSTALL_PYTHON_EXAMPLES=OFF \
+  -D BUILD_EXAMPLES=OFF \
+  -D BUILD_opencv_python3=ON \
+  ${TEMP}/opencv
+RUN make ${MAKE_FLAGS}
+RUN make ${MAKE_FLAGS} install
 
 # Set our working directory
 WORKDIR /usr/src/app
@@ -18,7 +57,7 @@ COPY ./requirements.txt /requirements.txt
 ENV READTHEDOCS True
 
 # pip install python deps from requirements.txt on the resin.io build server
-RUN pip install -r /requirements.txt
+RUN pip3 install -r /requirements.txt
 
 # This will copy all files in our root to the working  directory in the container
 COPY . ./
@@ -27,4 +66,4 @@ COPY . ./
 ENV INITSYSTEM on
 
 # main.py will run when container starts up on the device
-CMD ["python","src/app.py"]
+CMD ["python3","src/app.py"]
