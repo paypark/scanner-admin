@@ -1,15 +1,29 @@
 <div class="recording-page">
 
+    <div class="snapshot-container">
+
+        <img ng-if="$ctrl.recordingPage.isSnapshotShowing" ng-src="/image" style="width: 100px; height: 100px;"> 
+
+        <md-button ng-if="!$ctrl.recordingPage.isSnapshotShowing" class="md-primary" ng-click="$ctrl.onSnapshotShowClick()">
+            Show snapshot
+        </md-button>
+
+        <md-button ng-if="$ctrl.recordingPage.isSnapshotShowing" class="md-primary" ng-click="$ctrl.onSnapshotHideClick()">
+            Hide snapshot
+        </md-button>
+
+    </div>
+
     <div class="streaming-container">
 
         <video-stream ng-if="$ctrl.recordingPage.isStreamShowing" url="'/video_feed'"></video-stream>
 
-        <md-button ng-if="!$ctrl.recordingPage.isStreamShowing" class="md-fab recording-fab-button"
+        <md-button ng-if="!$ctrl.recordingPage.isStreamShowing" class="md-primary"
             ng-click="$ctrl.onStreamShowClick()">
             Show stream
         </md-button>
 
-        <md-button ng-if="$ctrl.recordingPage.isStreamShowing" class="md-fab recording-fab-button"
+        <md-button ng-if="$ctrl.recordingPage.isStreamShowing" class="md-primary"
             ng-click="$ctrl.onStreamHideClick()">
             Hide stream
         </md-button>

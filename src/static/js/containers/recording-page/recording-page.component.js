@@ -73,6 +73,16 @@
       this.store.dispatch(this.recordingPageActions.setShowStream(false));
     }
 
+    onSnapshotShowClick() {
+      console.log('onSnapshotShowClick');
+      this.store.dispatch(this.recordingPageActions.setShowSnapshot(true));
+    }
+
+    onSnapshotHideClick() {
+      console.log('onSnapshotHideClick');
+      this.store.dispatch(this.recordingPageActions.setShowSnapshot(false));
+    }
+
   }
 
   RecordingPageController.$inject = ['$interval', 'store', 'recordingPageActions', 'networkService'];

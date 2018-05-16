@@ -11,6 +11,7 @@
         isUsbMounted: true,
         isRecording: false,
         isStreamShowing: false,
+        isSnapshotShowing: false,
         cameraSettings: {
           frameRate: null,
           height: null,
@@ -37,6 +38,9 @@
 
         case this.recordingPageActions.SET_SHOW_STREAM:
           return Object.assign({}, state, { isStreamShowing: action.payload.isStreamShowing });
+
+        case this.recordingPageActions.SET_SNAPSHOW_SHOW:
+          return Object.assign({}, state, { isSnapshotShowing: action.payload.isSnapshotShowing });
 
         default:
           return state;

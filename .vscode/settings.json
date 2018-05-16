@@ -1,5 +1,0 @@
-{
-    "python.pythonPath": "/Users/kensteiner/anaconda2/envs/pi-flask/bin/python",
-    "python.linting.pylintEnabled": false,
-    "python.formatting.provider": "yapf"
-}

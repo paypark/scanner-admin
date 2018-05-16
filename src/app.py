@@ -8,6 +8,8 @@ import os
 import json
 from flask import Flask, render_template, Response, jsonify, send_from_directory, send_file, request
 import random
+import io
+import time
 
 from EnvironmentService import EnvironmentService
 from USBStorageService import USBStorageService
@@ -29,7 +31,7 @@ captureSettings.setWidth(640)
 app = Flask(__name__, static_folder='static')
 
 @app.route('/<path:filename>')
-def send_file(filename):
+def send_static_file(filename):
     return send_from_directory(app.static_folder, filename)
 
 @app.route('/')
@@ -117,6 +119,14 @@ def video_feed():
         mimetype='multipart/x-mixed-replace; boundary=frame'
     )
 
+@app.route('/image')
+def image():
+    """Get current image"""
+    camera = Camera(captureSettings)
+    image_binary = camera.get_frame()
+    image = io.BytesIO(image_binary)
+    filename = '{}.jpg'.format(time.time())
+    return send_file(image, mimetype='image/jpeg', as_attachment=True, attachment_filename=filename)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', threaded=True)
