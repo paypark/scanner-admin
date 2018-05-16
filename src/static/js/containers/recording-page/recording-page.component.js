@@ -63,6 +63,16 @@
         .then(() => this.store.dispatch(this.recordingPageActions.setCameraSettings(cameraSettingsClone)));
     }
 
+    onStreamShowClick() {
+      console.log('onStreamShowClick');
+      this.store.dispatch(this.recordingPageActions.setShowStream(true));
+    }
+
+    onStreamHideClick() {
+      console.log('onStreamHideClick');
+      this.store.dispatch(this.recordingPageActions.setShowStream(false));
+    }
+
   }
 
   RecordingPageController.$inject = ['$interval', 'store', 'recordingPageActions', 'networkService'];

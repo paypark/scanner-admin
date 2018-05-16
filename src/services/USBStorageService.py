@@ -15,13 +15,10 @@ class USBStorageService(object):
 
     @staticmethod
     def mount():
-        print('[USBStorageService] mount()')
         return PartitionService.mount()
 
     @staticmethod
     def unmount():
-        print('[USBStorageService] unmount()')
-
         if PartitionService.doesUnmountablePartitionExist():
             print('[USBStorageService] unmount() 2')
             PartitionService.do_unmount()
@@ -36,7 +33,6 @@ class USBStorageService(object):
 
     @staticmethod
     def isUSBStorageMounted():
-        print('[USBStorageService] isUSBStorageMounted()')
         try:
             return PartitionService.doesUnmountablePartitionExist()
         except:

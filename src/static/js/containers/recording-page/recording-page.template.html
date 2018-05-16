@@ -1,5 +1,21 @@
 <div class="recording-page">
 
+    <div class="streaming-container">
+
+        <video-stream ng-if="$ctrl.recordingPage.isStreamShowing" url="'/video_feed'"></video-stream>
+
+        <md-button ng-if="!$ctrl.recordingPage.isStreamShowing" class="md-fab recording-fab-button"
+            ng-click="$ctrl.onStreamShowClick()">
+            Show stream
+        </md-button>
+
+        <md-button ng-if="$ctrl.recordingPage.isStreamShowing" class="md-fab recording-fab-button"
+            ng-click="$ctrl.onStreamShowClick()">
+            Hide stream
+        </md-button>
+
+    </div>
+
     <div class="settings">
         <div class="settings-item">
             <label>Shutter speed</label>

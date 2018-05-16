@@ -7,6 +7,7 @@
       this.STOP_RECORDING = 'RECORDING_PAGE_STOP_RECORDING';
       this.SET_USB_MOUNTED = 'RECORDING_PAGE_SET_USB_MOUNTED';
       this.SET_CAMERA_SETTINGS = 'RECORDING_PAGE_SET_CAMERA_SETTINGS';
+      this.SET_SHOW_STREAM = 'RECORDING_PAGE_SET_SHOW_STREAM';
     }
 
     startRecording() {
@@ -35,6 +36,13 @@
         type: this.SET_CAMERA_SETTINGS,
         payload: { cameraSettings, },
       };
+    }
+
+    setShowStream(isStreamShowing) {
+      return {
+        type: this.SET_SHOW_STREAM,
+        payload: { isStreamShowing, },
+      }
     }
 
   }

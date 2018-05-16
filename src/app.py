@@ -30,9 +30,6 @@ app = Flask(__name__, static_folder='static')
 
 @app.route('/<path:filename>')
 def send_file(filename):
-    print('filename')
-    print(filename)
-    print(app.static_folder)
     return send_from_directory(app.static_folder, filename)
 
 @app.route('/')

@@ -10,6 +10,7 @@
       return {
         isUsbMounted: true,
         isRecording: false,
+        isStreamShowing: false,
         cameraSettings: {
           frameRate: null,
           height: null,
@@ -33,6 +34,9 @@
 
         case this.recordingPageActions.SET_CAMERA_SETTINGS:
           return Object.assign({}, state, { cameraSettings: action.payload.cameraSettings });
+
+        case this.recordingPageActions.SET_SHOW_STREAM:
+          return Object.assign({}, state, { isStreamShowing: action.payload.isStreamShowing });
 
         default:
           return state;
