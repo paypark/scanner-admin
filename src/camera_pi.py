@@ -17,10 +17,10 @@ class Camera(BaseCamera):
     def __init__(self, cameraSettings):
         super(Camera, self).__init__()
         time.sleep(2)
-        Camera.updateSettings(cameraSettings)
+        # Camera.updateSettings(cameraSettings)
 
     @staticmethod
-    def updateSettings(cameraSettings):
+    # def updateSettings(cameraSettings):
         # Camera.cameraInstance.framerate = cameraSettings.getFrameRate()
         # Camera.cameraInstance.shutter_speed = cameraSettings.getShutterSpeed()
         # Camera.cameraInstance.iso = cameraSettings.getIso()
