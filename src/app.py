@@ -58,7 +58,7 @@ def settings():
     if request.method == 'POST':
         jsonObject = request.get_json()
         captureSettings.set(jsonObject)
-        Camera.updateSettings(captureSettings)
+        # Camera.updateSettings(captureSettings)
         return json.dumps({ 'success': True }, 200, { 'Content-Type': 'applicaton/json' })
 
 @app.route('/recording/start', methods = ['GET'])
