@@ -4,6 +4,8 @@ import uuid
 import picamera
 import threading
 from base_camera import BaseCamera
+import cv2
+import numpy as np
 
 from FilenameService import FilenameService
 from USBStorageService import USBStorageService
@@ -33,7 +35,14 @@ class Camera(BaseCamera):
                 stream, 'jpeg', use_video_port=True):
 
             stream.seek(0)
-            yield stream.read()
+            image = stream.read()
+            data = np.fromstring(image, dtype=np.uint8)
+            image = cv2.imdecode(data, 1)
+
+            cv2.rectangle(image, (0, 0), (50, 50), (0, 255, 0), 3)
+
+            img_str = cv2.imencode('.jpg', image)[1].tostring()
+            yield img_str
 
             # reset stream for next frame
             stream.seek(0)
