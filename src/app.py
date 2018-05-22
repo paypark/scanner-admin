@@ -126,7 +126,7 @@ def image():
     image_binary = camera.get_frame()
     image = io.BytesIO(image_binary)
     filename = '{}.jpg'.format(time.time())
-    return send_file(image, mimetype='image/jpeg', as_attachment=True, attachment_filename=filename)
+    return send_file(image, mimetype='image/jpeg', cache_timeout=-1)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', threaded=True)
