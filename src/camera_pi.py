@@ -19,7 +19,7 @@ class Camera(BaseCamera):
         time.sleep(2)
         # Camera.updateSettings(cameraSettings)
 
-    @staticmethod
+    # @staticmethod
     # def updateSettings(cameraSettings):
         # Camera.cameraInstance.framerate = cameraSettings.getFrameRate()
         # Camera.cameraInstance.shutter_speed = cameraSettings.getShutterSpeed()
