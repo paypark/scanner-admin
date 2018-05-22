@@ -64,7 +64,7 @@ WORKDIR /usr/src/scanner-admin-app/
 ENV READTHEDOCS True
 
 # pip install python deps from requirements.txt on the resin.io build server
-RUN pip3 install -r /requirements.txt
+RUN pip3 install -r ./requirements.txt
 
 ENV INITSYSTEM on
 
